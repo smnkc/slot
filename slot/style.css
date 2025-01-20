@@ -1,0 +1,617 @@
+/* Temel Stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Oyun Seçici */
+.game-selector {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.game-button {
+    background: #2d4059;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.game-button:hover {
+    background: #3d5a80;
+    transform: translateY(-2px);
+}
+
+.game-button.active {
+    background: #ea5455;
+    box-shadow: 0 0 20px rgba(234, 84, 85, 0.3);
+}
+
+/* Kontrol Paneli */
+.control-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.control-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 5px;
+}
+
+.control-button:hover {
+    transform: scale(1.2);
+}
+
+/* Bakiye Gösterimi */
+.balance-display {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.balance-display h2 {
+    font-size: 1.8rem;
+    color: #ffd700;
+}
+
+/* Oyun Alanları */
+.game {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.game.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Slot Makinesi */
+.slot-display {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.slot {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.slot.spinning {
+    animation: spin 0.2s linear infinite;
+}
+
+.slot.winner {
+    animation: pulse 0.5s ease infinite;
+    background: #ffd700;
+}
+
+/* Bahis Grid */
+.bet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+.bet-button {
+    background: #2d4059;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bet-button:hover:not(:disabled) {
+    background: #3d5a80;
+    transform: translateY(-2px);
+}
+
+.bet-button.active {
+    background: #ea5455;
+    box-shadow: 0 0 15px rgba(234, 84, 85, 0.3);
+}
+
+.bet-button:disabled {
+    background: #4a4a4a;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Kontrol Butonları */
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    background: #2d4059;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.action-button:hover:not(:disabled) {
+    background: #3d5a80;
+    transform: translateY(-2px);
+}
+
+.action-button.primary {
+    background: #ea5455;
+}
+
+.action-button.primary:hover:not(:disabled) {
+    background: #ff6b6b;
+}
+
+.action-button:disabled {
+    background: #4a4a4a;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Oyun Bilgileri */
+.game-info {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.game-info p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+/* İstatistikler */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Blackjack Alanları */
+.dealer-area, .player-area {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    min-height: 120px;
+    margin: 15px 0;
+}
+
+.card {
+    width: 70px;
+    height: 100px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.red {
+    color: #ea5455;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #2d4059, #3d5a80);
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #ea5455;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ff6b6b;
+}
+
+/* Info Bölümleri */
+.info-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-section h3 {
+    color: #ffd700;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.info-section h4 {
+    color: #ea5455;
+    font-size: 1.2rem;
+    margin: 15px 0;
+}
+
+.rules ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.rules li {
+    margin: 10px 0;
+    position: relative;
+    padding-left: 25px;
+    line-height: 1.4;
+}
+
+.rules li:before {
+    content: "•";
+    color: #ea5455;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
+
+/* Kazanç Tablosu */
+.paytable {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.paytable h4 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.paytable-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.paytable-row:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.paytable-row.jackpot {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.paytable-row.jackpot:hover {
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.paytable-row span {
+    font-size: 1.1rem;
+}
+
+.paytable-row span:last-child {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+/* Mesaj Stili */
+.message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+/* Animasyonlar */
+@keyframes spin {
+    0% { transform: translateY(-3px); }
+    50% { transform: translateY(3px); }
+    100% { transform: translateY(-3px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -60%); }
+    15% { opacity: 1; transform: translate(-50%, -50%); }
+    85% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -40%); }
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        margin: 0;
+        border-radius: 15px;
+    }
+
+    .game-selector {
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .game-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .control-panel {
+        top: 10px;
+        right: 10px;
+    }
+
+    .balance-display h2 {
+        font-size: 1.5rem;
+    }
+
+    .slot-display {
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .slot {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .bet-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin: 15px auto;
+    }
+
+    .bet-button {
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .control-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .dealer-area, .player-area {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .cards {
+        gap: 5px;
+        min-height: 90px;
+    }
+
+    .card {
+        width: 50px;
+        height: 75px;
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        margin: 0;
+        min-height: 100vh;
+        border-radius: 0;
+        padding: 20px;
+    }
+
+    .info-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .info-section h4 {
+        font-size: 1.1rem;
+    }
+
+    .rules li {
+        font-size: 0.9rem;
+    }
+
+    .paytable-row {
+        padding: 8px 12px;
+    }
+
+    .paytable-row span {
+        font-size: 0.9rem;
+    }
+
+    .message {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        width: 90%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+
+/* Küçük Ekranlar İçin Ek Optimizasyonlar */
+@media (max-width: 360px) {
+    .slot {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+
+    .bet-button {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .card {
+        width: 45px;
+        height: 65px;
+        font-size: 0.9rem;
+    }
+
+    .game-info p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Yatay Mod Optimizasyonları */
+@media (max-height: 600px) and (orientation: landscape) {
+    .container {
+        padding: 10px;
+    }
+
+    .slot-display {
+        margin: 10px 0;
+    }
+
+    .bet-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 500px;
+    }
+
+    .control-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .action-button {
+        width: auto;
+    }
+
+    .stats {
+        flex-direction: row;
+    }
+
+    .modal-content {
+        margin: 20px auto;
+        min-height: auto;
+    }
+} 

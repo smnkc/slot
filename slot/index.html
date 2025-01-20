@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Oyunları</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Oyun Seçimi -->
+        <div class="game-selector">
+            <button id="slotButton" class="game-button active">SLOT</button>
+            <button id="blackjackButton" class="game-button">BLACKJACK</button>
+        </div>
+
+        <!-- Ses ve Bilgi -->
+        <div class="control-panel">
+            <button id="soundButton" class="control-button">🔊</button>
+            <button id="infoButton" class="control-button">ℹ️</button>
+        </div>
+
+        <!-- Bakiye Gösterimi -->
+        <div class="balance-display">
+            <h2>BAKİYE: <span id="balanceAmount">1000</span> ₺</h2>
+        </div>
+
+        <!-- SLOT OYUNU -->
+        <div id="slotGame" class="game active">
+            <!-- Slot Makinesi -->
+            <div class="slot-display">
+                <div class="slot" id="slot1">🎰</div>
+                <div class="slot" id="slot2">🎰</div>
+                <div class="slot" id="slot3">🎰</div>
+            </div>
+
+            <!-- Slot Bilgileri -->
+            <div class="game-info">
+                <p>Bahis: <span id="betAmount">0</span> ₺</p>
+                <p>Kazanç: <span id="winAmount">0</span> ₺</p>
+                <p>En Yüksek: <span id="highScore">0</span> ₺</p>
+            </div>
+
+            <!-- Bahis Butonları -->
+            <div class="bet-grid">
+                <button class="bet-button" data-amount="10">10₺</button>
+                <button class="bet-button" data-amount="25">25₺</button>
+                <button class="bet-button" data-amount="50">50₺</button>
+                <button class="bet-button" data-amount="100">100₺</button>
+                <button class="bet-button" data-amount="250">250₺</button>
+                <button class="bet-button" data-amount="500">500₺</button>
+            </div>
+
+            <!-- Kontrol Butonları -->
+            <div class="control-buttons">
+                <button id="clearBetButton" class="action-button">TEMİZLE</button>
+                <button id="spinButton" class="action-button primary" disabled>ÇEVİR!</button>
+                <button id="autoSpinButton" class="action-button" disabled>OTOMATİK</button>
+            </div>
+
+            <!-- İstatistikler -->
+            <div class="stats">
+                <p>Oyun: <span id="totalGames">0</span></p>
+                <p>Kazanç: <span id="wonGames">0</span></p>
+                <p>Oran: <span id="winRate">0</span>%</p>
+            </div>
+        </div>
+
+        <!-- BLACKJACK OYUNU -->
+        <div id="blackjackGame" class="game">
+            <!-- Kurpiyer Alanı -->
+            <div class="dealer-area">
+                <h3>KURPİYER</h3>
+                <div id="dealerCards" class="cards"></div>
+                <p>Toplam: <span id="dealerTotal">0</span></p>
+            </div>
+
+            <!-- Oyuncu Alanı -->
+            <div class="player-area">
+                <h3>OYUNCU</h3>
+                <div id="playerCards" class="cards"></div>
+                <p>Toplam: <span id="playerTotal">0</span></p>
+            </div>
+
+            <!-- Blackjack Bahis -->
+            <div class="bet-grid">
+                <button class="bet-button" data-amount="10">10₺</button>
+                <button class="bet-button" data-amount="25">25₺</button>
+                <button class="bet-button" data-amount="50">50₺</button>
+                <button class="bet-button" data-amount="100">100₺</button>
+                <button class="bet-button" data-amount="250">250₺</button>
+                <button class="bet-button" data-amount="500">500₺</button>
+            </div>
+
+            <!-- Blackjack Kontroller -->
+            <div class="control-buttons">
+                <button id="clearBjBetButton" class="action-button">TEMİZLE</button>
+                <button id="dealButton" class="action-button primary" disabled>DAĞIT</button>
+                <button id="hitButton" class="action-button" disabled>KART ÇEK</button>
+                <button id="standButton" class="action-button" disabled>KAL</button>
+                <button id="doubleButton" class="action-button" disabled>İKİYE KATLA</button>
+            </div>
+
+            <!-- Blackjack Bilgi -->
+            <div class="game-info">
+                <p>Bahis: <span id="bjBetAmount">0</span> ₺</p>
+                <p id="bjMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bilgi Modalı -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- Slot Oyunu Bilgileri -->
+            <div class="info-section">
+                <h3>🎰 SLOT OYUNU</h3>
+                <div class="rules">
+                    <h4>KURALLAR</h4>
+                    <ul>
+                        <li>Bahis miktarını seçin ve ÇEVİR butonuna basın</li>
+                        <li>Üç aynı sembol en yüksek kazancı verir</li>
+                        <li>İki aynı sembol bahsinizin 2 katını kazandırır</li>
+                        <li>Otomatik oyun özelliği ile sürekli çevirebilirsiniz</li>
+                    </ul>
+                </div>
+                
+                <div class="paytable">
+                    <h4>KAZANÇ TABLOSU</h4>
+                    <div class="paytable-row jackpot"><span>7️⃣ 7️⃣ 7️⃣</span><span>Bahis × 40</span></div>
+                    <div class="paytable-row"><span>💎 💎 💎</span><span>Bahis × 35</span></div>
+                    <div class="paytable-row"><span>🍒 🍒 🍒</span><span>Bahis × 30</span></div>
+                    <div class="paytable-row"><span>🍇 🍇 🍇</span><span>Bahis × 25</span></div>
+                    <div class="paytable-row"><span>🍊 🍊 🍊</span><span>Bahis × 20</span></div>
+                    <div class="paytable-row"><span>🍎 🍎 🍎</span><span>Bahis × 15</span></div>
+                    <div class="paytable-row special"><span>Herhangi İki Aynı</span><span>Bahis × 2</span></div>
+                </div>
+            </div>
+
+            <!-- Blackjack Oyunu Bilgileri -->
+            <div class="info-section">
+                <h3>♠️ BLACKJACK</h3>
+                <div class="rules">
+                    <h4>KURALLAR</h4>
+                    <ul>
+                        <li>Amacınız 21'e en yakın eli elde etmek</li>
+                        <li>As (A) = 1 veya 11</li>
+                        <li>Vale (J), Kız (Q), Papaz (K) = 10</li>
+                        <li>Kurpiyer 17 ve üzerinde kalmak zorunda</li>
+                    </ul>
+                </div>
+                
+                <div class="paytable">
+                    <h4>ÖDEMELER</h4>
+                    <div class="paytable-row jackpot"><span>Blackjack (As + 10)</span><span>Bahis × 2.5</span></div>
+                    <div class="paytable-row"><span>Normal Kazanç</span><span>Bahis × 2</span></div>
+                    <div class="paytable-row"><span>Beraberlik</span><span>Bahis İade</span></div>
+                </div>
+                
+                <div class="rules">
+                    <h4>OYUN SEÇENEKLERİ</h4>
+                    <ul>
+                        <li><strong>KART ÇEK:</strong> Yeni kart alın</li>
+                        <li><strong>KAL:</strong> Elinizle kalın</li>
+                        <li><strong>İKİYE KATLA:</strong> Bahsi ikiye katlayıp tek kart çekin</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ses Efektleri -->
+    <audio id="spinSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019.wav"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2021/2021.wav"></audio>
+    <audio id="jackpotSound" src="https://assets.mixkit.co/active_storage/sfx/2020/2020.wav"></audio>
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571.wav"></audio>
+    <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2028/2028.wav"></audio>
+    <audio id="cardSound" src="https://assets.mixkit.co/active_storage/sfx/2001/2001.wav"></audio>
+    <audio id="winGameSound" src="https://assets.mixkit.co/active_storage/sfx/2017/2017.wav"></audio>
+    <audio id="loseGameSound" src="https://assets.mixkit.co/active_storage/sfx/2018/2018.wav"></audio>
+
+    <script src="game.js"></script>
+</body>
+</html> 
